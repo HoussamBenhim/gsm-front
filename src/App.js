@@ -1,7 +1,15 @@
-import './assets/css/App.css'
+import './assets/css/index.css'
+import SignUp from './pages/SignUp'
 
 function App() {
-  return <div>Hello</div>
+  console.log(
+    'process.env.REACT_APP_BASE_URL : ' + process.env.REACT_APP_BASE_URL
+  )
+  return (
+    <>
+      <SignUp />
+    </>
+  )
 }
 
 export default App
