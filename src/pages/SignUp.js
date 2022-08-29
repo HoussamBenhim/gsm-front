@@ -1,8 +1,9 @@
 import { LockClosedIcon } from '@heroicons/react/solid'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Alerte from '../components/Alerte'
 import Logo from '../components/Logo'
 import { validEmail, validPassowrd } from '../utils/Regex.js'
+import services from '../services/axios'
 export default function SignUp() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -13,6 +14,12 @@ export default function SignUp() {
     message: '',
     type: ''
   })
+  const [register, setRegister] = useState(false)
+
+  useEffect(() => {
+    if (register) {
+    }
+  }, [register])
 
   const showAlert = (
     showAlerte = false,
@@ -54,6 +61,16 @@ export default function SignUp() {
       checkPassord(password) &&
       confirmPassorwd === password
     ) {
+      services({
+        url: '/registration/signup',
+        method: 'post',
+        body: JSON.stringify({
+          firstName: 'houssam',
+          lastName: 'benhim',
+          email: email,
+          password: password
+        })
+      })
     }
   }
   const checkEmail = (email) => {
