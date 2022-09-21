@@ -7,19 +7,28 @@ axios.defaults.headers = {
 }
 
 export default function services({
-  url,
-  method,
-  body = null,
-  headers = { accept: '*/*' }
+  _url,
+  _method,
+  _data = null,
+  _headers = {
+    'Content-Type': 'application/json'
+  }
 }) {
   const res = { response: null, error: null }
-  axios[method](url, JSON.parse(headers), JSON.parse(body))
+  var config = {
+    method: _method,
+    url: _url,
+    headers: _headers,
+    data: _data
+  }
+  console.log(config)
+  axios(config)
     .then((res) => {
+      console.log(res.data)
       res.response = res.data
     })
     .catch((err) => {
       res.error = err
     })
-    .finally(() => {})
   return res
 }

@@ -1,21 +1,21 @@
+import React from 'react'
 import { LockClosedIcon } from '@heroicons/react/solid'
 import { useEffect, useState } from 'react'
 import Alerte from '../components/Alerte'
 import Logo from '../components/Logo'
-import { validEmail, validPassowrd } from '../utils/Regex.js'
 import services from '../services/axios'
-export default function SignUp() {
+
+import PropTypes from 'prop-types'
+
+const SignIn = () => {
   const [email, setEmail] = useState('')
-  const [lastName, setLastName] = useState('')
   const [password, setPassword] = useState('')
-  const [confirmPassorwd, setConfirmPasword] = useState('')
   const [showAlerte, setShowAlerte] = useState(false)
   const [alerteMessage, setalerteMessage] = useState({
     title: '',
     message: '',
     type: ''
   })
-
   const showAlert = (
     showAlerte = false,
     title = '',
@@ -27,47 +27,21 @@ export default function SignUp() {
   }
   const handelSubmit = (e) => {
     e.preventDefault()
-    /*chekc email*/
-    if (lastName && lastName.length < 3) {
-      setalerteMessage({
-        title: 'nom ou le prenom doivent être valid!',
-        message: '',
-        type: 'danger'
-      })
-      setShowAlerte(true)
-    } else if (!checkEmail(email)) {
+    if (!checkEmail(email)) {
       setalerteMessage({ title: 'Mail invalide!', message: '', type: 'danger' })
       setShowAlerte(true)
-    } else if (!checkPassord(password)) {
-      /* check password*/
+    } else if (password && password.length < 8) {
       setalerteMessage({
-        message:
-          ' \t1-Contenir au moins 8 charactère \t 2-contenir une Majuscule \t 3-Contenir une miniscule \t 4-Contenir un chiffre',
-        title: 'Mot de passe invalide :',
-        type: 'danger'
-      })
-      setShowAlerte(true)
-    } else if (confirmPassorwd !== password) {
-      /* check confirm password*/
-      setalerteMessage({
+        title: 'Vérifier le mot de pass!',
         message: '',
-        title: 'Les deux mots de passes ne correspondent pas !',
         type: 'danger'
       })
       setShowAlerte(true)
-    }
-    /* cas tout est bon*/
-    if (
-      checkEmail(email) &&
-      checkPassord(password) &&
-      confirmPassorwd === password
-    ) {
+    } else if (checkEmail(email) && password && password.length > 8) {
       services({
         _url: '/registration/signup',
         _method: 'post',
         _data: JSON.stringify({
-          firstname: 'houssam',
-          lastname: 'benhim',
           email: email,
           password: password
         })
@@ -79,43 +53,20 @@ export default function SignUp() {
     return validEmail.test(email)
     /* eslint-disable */
   }
-  const checkPassord = (password) => {
-    /* eslint-disable */
-    return validPassowrd.test(password)
-    /* eslint-disable */
-  }
-
   return (
-    <>
+    <div>
       <div className='  min-h-full flex-col m-auto max-w-md items-center justify-center'>
         <div className='flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
           <div className='border-2 border-gray-200 max-w-md w-full space-y-8 p-5 rounded-md'>
             <div>
               <Logo />
               <h2 className='mt-6 text-center text-3xl tracking-tight font-bold text-gray-900'>
-                Créez un compte
+                Inscription
               </h2>
             </div>
             <form className='mt-8 space-y-6' onSubmit={handelSubmit}>
               <input type='hidden' name='remember' defaultValue='true' />
               <div className='rounded-md shadow-sm -space-y-px'>
-                <div>
-                  <label htmlFor='email-address' className='sr-only'>
-                    Nom/prenom
-                  </label>
-                  <input
-                    id='nom'
-                    name='nom'
-                    type='text'
-                    autoComplete='nom'
-                    required
-                    className='appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
-                    placeholder='Nom'
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                  />
-                </div>
-
                 <div>
                   <label htmlFor='email-address' className='sr-only'>
                     Email address
@@ -148,21 +99,6 @@ export default function SignUp() {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <div>
-                  <label htmlFor='password' className='sr-only'>
-                    Confirm Password
-                  </label>
-                  <input
-                    id='password-confirm'
-                    name='password-confirm'
-                    type='password'
-                    required
-                    className='appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
-                    placeholder='Confirm password'
-                    value={confirmPassorwd}
-                    onChange={(e) => setConfirmPasword(e.target.value)}
-                  />
-                </div>
               </div>
 
               <div className='flex items-center justify-between'>
@@ -186,7 +122,7 @@ export default function SignUp() {
                     href='#'
                     className='font-medium text-indigo-600 hover:text-indigo-500'
                   >
-                    Vous avez déja un compte?
+                    Vous n'avez pas de compte?
                   </a>
                 </div>
               </div>
@@ -210,6 +146,10 @@ export default function SignUp() {
         </div>
         {showAlerte && <Alerte {...alerteMessage} showAlert={showAlert} />}
       </div>
-    </>
+    </div>
   )
 }
+
+SignIn.propTypes = {}
+
+export default SignIn
