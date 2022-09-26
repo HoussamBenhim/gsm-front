@@ -21,10 +21,8 @@ export default function services({
     headers: _headers,
     data: _data
   }
-  console.log(config)
   axios(config)
     .then((res) => {
-      console.log(res.data)
       res.response = res.data
     })
     .catch((err) => {

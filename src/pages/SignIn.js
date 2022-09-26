@@ -38,7 +38,7 @@ const SignIn = () => {
       })
       setShowAlerte(true)
     } else if (checkEmail(email) && password && password.length > 8) {
-      services({
+      const response = services({
         _url: '/registration/signup',
         _method: 'post',
         _data: JSON.stringify({
@@ -46,6 +46,7 @@ const SignIn = () => {
           password: password
         })
       })
+      console.log('from SignIn.js : ' + response)
     }
   }
   const checkEmail = (email) => {
